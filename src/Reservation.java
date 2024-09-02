@@ -47,15 +47,39 @@ public class Reservation {
         return  reservations;
     }
     public static void createReservation(Room room, Client client, Date date) {
-        for(Reservation reservation:reservations) {
-            if(reservation.getRoom().getNumber()==room.getNumber()&&reservation.getDate().equals(date)) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getRoom().getNumber() == room.getNumber() && reservation.getDate().equals(date)) {
                 System.out.println("Room " + room.getNumber() + " is not available on " + date);
                 return;
             }
         }
-        Reservation newRes=new Reservation(room,client,date);
+        room.setAvailable(false);
+        Reservation newRes = new Reservation(room, client, date);
         reservations.add(newRes);
-        System.out.println("New Reservation created"+newRes);
+        System.out.println("New Reservation created" + newRes);
+    }
+    public static boolean updateReservation(int id, Room nRoom, Client nClient, Date nDate) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getId() == id) {
+                for (Reservation existingReservation : reservations) {
+                    if (existingReservation.getRoom().getNumber() == nRoom.getNumber() &&
+                            existingReservation.getDate().equals(nDate) &&
+                            existingReservation.getId() != id) {
+                        System.out.println("Room " + nRoom.getNumber() + " is not available on " + nDate);
+                        return false;
+                    }
+                }
+
+                reservation.setRoom(nRoom);
+                reservation.setClient(nClient);
+                reservation.setDate(nDate);
+                System.out.println("Reservation updated: " + reservation);
+                return true;
+            }
+        }
+
+        System.out.println("Reservation not found with ID: " + id);
+        return false;
     }
 
 }
