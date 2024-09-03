@@ -1,103 +1,107 @@
-import  java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Date;
-import  java.util.List;
+import java.util.List;
+
 public class Reservation {
-    public static int counter=1;
+    public static int counter = 1;
     private int id;
     private Room room;
     private Client client;
     private Date startDate;
     private Date endDate;
-    private  static  List<Reservation> reservations=new ArrayList();
-    public Reservation(Room room, Client client, Date startDate, Date endDate) {
-        this.id=counter++;
-        this.room=room;
-        this.client=client;
-        this.startDate=startDate;
-        this.endDate=endDate;
-    }
-    public int getId() {
+    private static List<Reservation> reservations = new ArrayList<>();
 
+    public Reservation(Room room, Client client, Date startDate, Date endDate) {
+        this.id = counter++;
+        this.room = room;
+        this.client = client;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+
+    public int getId() {
         return id;
     }
-    public void setId(int id) {
-
-        this.id=id;
-    }
     public Client getClient() {
-
         return client;
-    }
-    public void setClient(Client client) {
-
-        this.client=client;
     }
     public Room getRoom() {
         return room;
     }
-    public void setRoom(Room room) {
-
-        this.room=room;
-    }
     public Date getStartDate() {
         return startDate;
-    }
-    public void setStartDate(Date startDate) {
-
-        this.startDate=startDate;
     }
     public Date getEndDate() {
         return endDate;
     }
-    public void setEndDate(Date endDate) {
 
-        this.endDate=endDate;
+    public void setClient(Client client) {
+        this.client = client;
+    }
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     @Override
     public String toString() {
-        return "the reservation is done \n"+room+" for the client "+client;
+        return "Reservation [ID: " + id + ", Room: " + room + ", Client: " + client +
+                ", Start Date: " + startDate + ", End Date: " + endDate + "]";
     }
-    public static List<Reservation> getReservations() {
 
-        return  reservations;
-    }
-    public static void createReservation(Room room, Client client, Date startDate , Date endDate) {
-        for (Reservation reservation : reservations) {
-            if (reservation.getRoom().getNumber() == room.getNumber() && reservation.getStartDate().equals(startDate)) {
-                System.out.println("Room " + room.getNumber() + " is not available on " + startDate);
-                return;
-            }
+
+    public static List<Reservation> getReservations() { return reservations; }
+
+    public static boolean createReservation(Room room, Client client, Date startDate, Date endDate) {
+        if (!isValidDate(startDate, endDate)) {
+            System.out.println("Invalid date range: Start date must be today or later, and before end date.");
+            return false;
         }
-        room.setAvailable(false);
-        Reservation newRes = new Reservation(room, client, startDate, endDate);
-        reservations.add(newRes);
-        System.out.println("New Reservation created" + newRes);
+
+        if (isRoomAvailable(room, startDate, endDate)) {
+            room.setAvailable(false);
+            Reservation newRes = new Reservation(room, client, startDate, endDate);
+            reservations.add(newRes);
+            System.out.println("New Reservation created: " + newRes);
+            return true;
+        } else {
+            System.out.println("Room " + room.getNumber() + " is not available for the selected dates.");
+            return false;
+        }
     }
-    public static boolean updateReservation(int id, Room nRoom, Client nClient, Date nStartDate, Date nEndDate) {
+
+    public static boolean updateReservation(int id, Room newRoom, Client newClient, Date newStartDate, Date newEndDate) {
+        if (!isValidDate(newStartDate, newEndDate)) {
+            System.out.println("Invalid date range: Start date must be today or later, and before end date.");
+            return false;
+        }
+
         for (Reservation reservation : reservations) {
             if (reservation.getId() == id) {
-                for (Reservation existingReservation : reservations) {
-                    if (existingReservation.getRoom().getNumber() == nRoom.getNumber() &&
-                            existingReservation.getStartDate().equals(nStartDate) &&
-                            existingReservation.getId() != id) {
-                        System.out.println("Room " + nRoom.getNumber() + " is not available on " + nStartDate+ "to "+nEndDate);
-                        return false;
-                    }
+                if (isRoomAvailable(newRoom, newStartDate, newEndDate) || reservation.getRoom().getNumber() == newRoom.getNumber()) {
+                    reservation.setRoom(newRoom);
+                    reservation.setClient(newClient);
+                    reservation.setStartDate(newStartDate);
+                    reservation.setEndDate(newEndDate);
+                    System.out.println("Reservation updated: " + reservation);
+                    return true;
+                } else {
+                    System.out.println("Room " + newRoom.getNumber() + " is not available for the selected dates.");
+                    return false;
                 }
-
-                reservation.setRoom(nRoom);
-                reservation.setClient(nClient);
-                reservation.setStartDate(nStartDate);
-                reservation.setEndDate(nEndDate);
-                System.out.println("Reservation updated: " + reservation);
-                return true;
             }
         }
 
         System.out.println("Reservation not found with ID: " + id);
         return false;
     }
+
     public static boolean cancelReservation(int id) {
         for (Reservation reservation : reservations) {
             if (reservation.getId() == id) {
@@ -120,5 +124,21 @@ public class Reservation {
         }
         System.out.println("Reservation not found with ID: " + id);
         return null;
+    }
+
+
+    private static boolean isRoomAvailable(Room room, Date startDate, Date endDate) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getRoom().getNumber() == room.getNumber() &&
+                    (startDate.before(reservation.getEndDate()) && endDate.after(reservation.getStartDate()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isValidDate(Date startDate, Date endDate) {
+        Date today = new Date();
+        return (startDate.after(today) || startDate.equals(today)) && startDate.before(endDate);
     }
 }
