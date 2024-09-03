@@ -1,12 +1,12 @@
 public class Client {
-    private static int counetr = 1;
+    private static int counter = 1;
     private int id;
     private String name;
     private String email;
     private String phone;
 
     public Client(String name, String email, String phone) {
-        this.id = counetr++;
+        this.id = counter++;
         this.name = name;
         this.email = email;
         this.phone = phone;

@@ -102,7 +102,7 @@ public class Reservation {
         for (Reservation reservation : reservations) {
             if (reservation.getId() == id) {
                 reservations.remove(reservation);
-                reservation.getRoom().setAvailable(true); // Mark the room as available again
+                reservation.getRoom().setAvailable(true);
                 System.out.println("Reservation canceled: " + reservation);
                 return true;
             }
