@@ -64,13 +64,21 @@ public class Hotel {
     }
 
     public void displayAvailRooms(RoomType type) {
+        boolean found = false;
+
         System.out.println("Available rooms of type " + type + " in hotel " + name + ":");
         for (Room room : rooms) {
             if (room.getType() == type && room.isAvailable()) {
                 System.out.println(room);
+                found = true;
             }
         }
+
+        if (!found) {
+            System.out.println("No available rooms of type " + type + " were found in hotel " + name + ".");
+        }
     }
+
 
     public boolean addRes(Room room, Client client, Date startDate, Date endDate) {
         if (rooms.contains(room)) {
