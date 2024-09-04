@@ -98,7 +98,7 @@ public class Menu {
 
         System.out.print("Enter room number: ");
         int number = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
 
         Room room = Room.findRoomByNum(number);
         if (room == null || !room.isAvailable()) {
