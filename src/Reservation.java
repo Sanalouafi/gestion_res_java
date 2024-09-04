@@ -17,6 +17,7 @@ public class Reservation {
         this.client = client;
         this.startDate = startDate;
         this.endDate = endDate;
+        client.addReservation(this);
     }
 
 
@@ -116,6 +117,7 @@ public class Reservation {
             if (reservation.getId() == id) {
                 reservations.remove(reservation);
                 reservation.getRoom().setAvailable(true);
+                reservation.getClient().removeReservation(id);
                 System.out.println("Reservation canceled: " + reservation);
                 return true;
             }
