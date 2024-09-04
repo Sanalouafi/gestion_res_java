@@ -51,7 +51,7 @@ public class Room {
 
 
     public static boolean createRoom(int number, RoomType type, boolean isAvailable) {
-        if (findRoomByNumber(number) != null) {
+        if (findRoomByNum(number) != null) {
             System.out.println("Room creation failed: Room number " + number + " already exists.");
             return false;
         }
@@ -66,7 +66,7 @@ public class Room {
     }
 
     public static boolean updateRoom(int number, RoomType newType, boolean newAvailability) {
-        Room room = findRoomByNumber(number);
+        Room room = findRoomByNum(number);
         if (room != null) {
             room.setType(newType);
             room.setAvailable(newAvailability);
@@ -78,7 +78,7 @@ public class Room {
     }
 
     public static boolean deleteRoom(int number) {
-        Room room = findRoomByNumber(number);
+        Room room = findRoomByNum(number);
         if (room != null) {
             rooms.remove(room);
             System.out.println("Room deleted: " + room);
@@ -88,7 +88,7 @@ public class Room {
         return false;
     }
 
-    public static Room findRoomByNumber(int number) {
+    public static Room findRoomByNum(int number) {
         for (Room room : rooms) {
             if (room.getNumber() == number) {
                 return room;
@@ -108,7 +108,7 @@ public class Room {
     }
 
     public static boolean checkRoomAvailability(int number) {
-        Room room = findRoomByNumber(number);
+        Room room = findRoomByNum(number);
         if (room != null && room.isAvailable()) {
             return true;
         }
