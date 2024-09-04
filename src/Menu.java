@@ -100,7 +100,7 @@ public class Menu {
         int number = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
-        Room room = Room.findRoomByNum(number); // Make sure this method is correctly implemented
+        Room room = Room.findRoomByNum(number);
         if (room == null || !room.isAvailable()) {
             System.out.println("Room not available or does not exist.");
             return;
