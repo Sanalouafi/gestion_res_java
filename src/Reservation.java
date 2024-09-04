@@ -23,15 +23,19 @@ public class Reservation {
     public int getId() {
         return id;
     }
+
     public Client getClient() {
         return client;
     }
+
     public Room getRoom() {
         return room;
     }
+
     public Date getStartDate() {
         return startDate;
     }
+
     public Date getEndDate() {
         return endDate;
     }
@@ -39,12 +43,15 @@ public class Reservation {
     public void setClient(Client client) {
         this.client = client;
     }
+
     public void setRoom(Room room) {
         this.room = room;
     }
+
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
@@ -56,7 +63,9 @@ public class Reservation {
     }
 
 
-    public static List<Reservation> getReservations() { return reservations; }
+    public static List<Reservation> getReservations() {
+        return reservations;
+    }
 
     public static boolean createReservation(Room room, Client client, Date startDate, Date endDate) {
         if (!isValidDate(startDate, endDate)) {

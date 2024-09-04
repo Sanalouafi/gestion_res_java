@@ -49,7 +49,7 @@ public class Room {
         return "Room{" + "number=" + number + ", type=" + type + ", isAvailable=" + isAvailable + '}';
     }
 
-    // Static methods for managing rooms
+
     public static boolean createRoom(int number, RoomType type, boolean isAvailable) {
         if (findRoomByNumber(number) != null) {
             System.out.println("Room creation failed: Room number " + number + " already exists.");
