@@ -1,5 +1,6 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -8,11 +9,12 @@ public class Menu {
     private Scanner scanner;
     private Hotel hotel;
     private SimpleDateFormat dateFormat;
-
+    private List<Client> clients;
     public Menu() {
         scanner = new Scanner(System.in);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
+        clients = new ArrayList<>();
     }
 
     public void start() {
@@ -26,7 +28,8 @@ public class Menu {
             System.out.println("5. Update Reservation");
             System.out.println("6. List All Reservations");
             System.out.println("7. Display Available Rooms");
-            System.out.println("8. Exit");
+            System.out.println("8. Show Client Reservations");
+            System.out.println("9. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -55,12 +58,15 @@ public class Menu {
                     displayAvailableRooms();
                     break;
                 case 8:
-                    System.out.println("Exiting...");
+                    showClientReservations();
                     break;
+                case 9:
+                    System.out.println("Exiting...");
+                break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 8);
+        } while (choice != 9);
     }
 
     private void enterHotel() {
@@ -113,7 +119,7 @@ public class Menu {
         System.out.print("Enter client phone: ");
         String clientPhone = scanner.nextLine();
         Client client = new Client(clientName, clientEmail, clientPhone);
-
+        clients.add(client);
         System.out.print("Enter start date (yyyy-MM-dd): ");
         Date startDate = parseDate(scanner.nextLine());
         System.out.print("Enter end date (yyyy-MM-dd): ");
@@ -170,7 +176,19 @@ public class Menu {
         RoomType type = RoomType.valueOf(scanner.nextLine());
         hotel.displayAvailRooms(type);
     }
+    private void showClientReservations() {
+        System.out.print("Enter client ID to show reservations: ");
+        int clientId = scanner.nextInt();
+        scanner.nextLine();
 
+        for (Client client : clients) {
+            if (client.getId() == clientId) {
+                client.displayReservations();
+                return;
+            }
+        }
+        System.out.println("Client with ID " + clientId + " not found.");
+    }
     private Date parseDate(String dateString) {
         try {
             return dateFormat.parse(dateString);
