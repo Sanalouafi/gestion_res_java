@@ -85,7 +85,7 @@ public class Menu {
         RoomType type = RoomType.valueOf(scanner.nextLine());
         System.out.print("Is the room available (true/false): ");
         boolean isAvailable = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
 
         Room.createRoom(number, type, isAvailable);
     }
