@@ -85,7 +85,7 @@ public class Menu {
         RoomType type = RoomType.valueOf(scanner.nextLine());
         System.out.print("Is the room available (true/false): ");
         boolean isAvailable = scanner.nextBoolean();
-        scanner.nextLine(); 
+        scanner.nextLine();
 
         Room.createRoom(number, type, isAvailable);
     }
@@ -98,10 +98,11 @@ public class Menu {
 
         System.out.print("Enter room number: ");
         int number = scanner.nextInt();
-        scanner.nextLine();
-        Room room = Room.findRoomByNum(number);
+        scanner.nextLine(); // Consume newline
+
+        Room room = Room.findRoomByNum(number); // Make sure this method is correctly implemented
         if (room == null || !room.isAvailable()) {
-            System.out.println("Room not available.");
+            System.out.println("Room not available or does not exist.");
             return;
         }
 
@@ -122,6 +123,7 @@ public class Menu {
             Reservation.createReservation(room, client, startDate, endDate);
         }
     }
+
 
     private void cancelRes() {
         System.out.print("Enter reservation ID to cancel: ");
